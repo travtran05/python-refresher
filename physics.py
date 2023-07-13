@@ -50,4 +50,4 @@ def calculate_pressure(depth):
     if depth < 0:
         raise ValueError
 
-    return 1000 * 9.81 * depth
+    return 1000 * 9.81 * depth + 101325
