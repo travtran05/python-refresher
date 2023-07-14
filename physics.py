@@ -152,7 +152,7 @@ def calculate_auv_acceleration(
     """
     if thruster_distance < 0 or volume <= 0 or mass <= 0 or f_magnitude < 0:
         raise ValueError
-    if thruster_distance > 100:
+    if f_magnitude > 100:
         raise ValueError
     if f_angle > 30 / 180 * np.pi or f_angle < -30 * np.pi / 180:
         raise ValueError
@@ -166,7 +166,7 @@ def calculate_auv_acceleration(
 
 
 def calculate_auv_angluar_acceleration(
-    f_magnitude, f_angle, inertia, thruster_distance
+    f_magnitude, f_angle, inertia=1, thruster_distance=0.5
 ):
     """
 
@@ -177,7 +177,7 @@ def calculate_auv_angluar_acceleration(
     thruster_distance: optional): the distance from the center of mass of the AUV to the thruster in meters. The default value is 0.5m.
 
     """
-    if thruster_distance > 100:
+    if f_magnitude > 100:
         raise ValueError
     if f_angle > 30 / 180 * np.pi or f_angle < -30 * np.pi / 180:
         raise ValueError
@@ -189,4 +189,66 @@ def calculate_auv_angluar_acceleration(
     return tau / inertia
 
 
-# problem 9
+# problem 9, part 1
+
+
+def calculate_auv2_acceleration(T, alpha, theta, mass=100):
+    """
+
+    And AUV is submerged in water. The AUV has 4 thrusters fixed to the body of the AUV with and angle alpha.
+    Each thruster applies a force Ti to the AUV, where i is the thruster number. The thrusters are
+    offset from the center of mass of the AUV by a distance L longitudinally and l laterally, in the robot frame.
+
+    calculates the acceleration of the AUV in the 2D plane.
+
+    T: an np.ndarray of the magnitudes of the forces applied by the thrusters in Newtons
+    alpha: the angle of the thrusters in radians
+    theta: the angle of the auv
+    mass: (optional): the mass of the AUV in kilograms. The default value is 100kg
+
+    """
+
+    for i in range(4):
+        if T[i] < 0:
+            raise ValueError
+
+    if mass <= 0:
+        raise ValueError
+
+    rotation_matrix = [[np.cos(theta), np.sin(theta)], [-np.sin(theta), np.cos[theta]]]
+
+    xycomponents = [
+        [np.cos(theta), np.cos(theta), -np.cos(theta), -np.cos(theta)],
+        [np.sin(theta), -np.sin(theta), -np.sin(theta), np.sin(theta)],
+    ]
+
+    forces = np.matmul(rotation_matrix, np.matmul(xycomponents, T))
+
+    return forces / mass
+
+
+# problem 9, part 2
+
+
+def calculate_auv2_angular_acceleration(T, alpha, L, l, inertia=100):
+    """
+
+    calculates the angular acceleration of the AUV
+    T: an np.ndarray of the magnitudes of the forces applied by the thrusters in Newtons
+    alpha: the angle of the thrusters in radians
+    L: the distance from the center of mass of the AUV to the thrusters in meters
+    l: the distance from the center of mass of the AUV to the thrusters in meters
+    inertia: (optional): the moment of inertia of the AUV in kg*m^2. The default value is 100
+
+    """
+
+    for i in range(4):
+        if T[i] < 0:
+            raise ValueError
+
+    if L <= 0 or l <= 0 or inertia <= 0:
+        raise ValueError
+
+    return (l * np.sin(alpha) + L * np.cos(alpha)) * (
+        (-1) * T[0] + (-1) * T[2] + T[1] + T[3]
+    )
