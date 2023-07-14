@@ -128,4 +128,65 @@ def calculate_moment_of_inertia(mass, r):
     return mass * r * r
 
 
-# problem 8
+# problem 8, part 1
+
+
+def calculate_auv_acceleration(
+    f_magnitude, f_angle, mass=100, volume=0.1, thruster_distance=0.5
+):
+    """
+
+    An AUV is submerged in water. The AUV has a mass of 100kg and a volume of 0.1m^3.
+    The AUV is equipped with a thruster that can apply a force up to 100N. The thruster is located
+    0.5m from the center of mass of the AUV. The thruster can rotate 30 degrees in either direction of the x-axis.
+
+    calculates the acceleration of the AUV in the 2D plane
+
+    f_magnitude: the magnitude of force applied by the thruster in Newtons
+    f_angle: the angle of the force applied by the thruster in radians. The angle is measured from the x-axis.
+        Positive angles are measured in the counter-clockwise direction.
+    mass: (optional): the mass of the AUV in kilograms. The default value is 100kg.
+    volume: (optional): the volume of the AUV in cubic meters. The default value is 0.1m^3
+    thurster_distance: (optional): the distance from the center of mass of the AUV to the thruster in meters. The default value is 0.5m
+
+    """
+    if thruster_distance < 0 or volume <= 0 or mass <= 0 or f_magnitude < 0:
+        raise ValueError
+    if thruster_distance > 100:
+        raise ValueError
+    if f_angle > 30 / 180 * np.pi or f_angle < -30 * np.pi / 180:
+        raise ValueError
+
+    force = f_magnitude / np.cos(f_angle)
+
+    return force / mass
+
+
+# problem 8, part 2
+
+
+def calculate_auv_angluar_acceleration(
+    f_magnitude, f_angle, inertia, thruster_distance
+):
+    """
+
+    calculates the angular acceleration of the AUV
+    f_magnitude: magnitude of force applied by the thruster in Newtons
+    f_angle: angle of the force applied by the thruster in radians
+    inertia: (optional): the moment of inertia of the AUV in kg*m^2. The default value is 1.
+    thruster_distance: optional): the distance from the center of mass of the AUV to the thruster in meters. The default value is 0.5m.
+
+    """
+    if thruster_distance > 100:
+        raise ValueError
+    if f_angle > 30 / 180 * np.pi or f_angle < -30 * np.pi / 180:
+        raise ValueError
+    if thruster_distance < 0 or inertia <= 0 or f_magnitude < 0:
+        raise ValueError
+
+    tau = f_magnitude * np.cos(f_angle) * thruster_distance
+
+    return tau / inertia
+
+
+# problem 9
