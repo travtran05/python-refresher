@@ -30,22 +30,22 @@ class TestPhysics(unittest.TestCase):
 
     def test_calculate_acceleration(self):
         self.assertEqual(physics.calculate_acceleration(10, 10), 1)
-        self.assertFalse(physics.calculate_acceleration(10, 10), 321)
+        self.assertNotEqual(physics.calculate_acceleration(10, 10), 321)
         self.assertRaises(ValueError, physics.calculate_acceleration, 10, -1000)
 
     def test_calculate_angular_acceleration(self):
         self.assertEqual(physics.calculate_angular_acceleration(10, 10), 1)
-        self.assertFalse(physics.calculate_angular_acceleration(10, 10), 4905)
+        self.assertNotEqual(physics.calculate_angular_acceleration(10, 10), 4905)
         self.assertRaises(ValueError, physics.calculate_angular_acceleration, 10, -1000)
 
     def test_calculate_torque(self):
         self.assertEqual(physics.calculate_torque(10, 0, 10), 100)
-        self.assertFalse(physics.calculate_torque(10, 0, 10), 49)
-        self.assertRaises(ValueError, physics.calculate_torque, 10, 10 - 1000)
+        self.assertNotEqual(physics.calculate_torque(10, 0, 10), 49)
+        self.assertRaises(ValueError, physics.calculate_torque, 10, 10, -1000)
 
     def test_calculate_moment_of_inertia(self):
         self.assertEqual(physics.calculate_moment_of_inertia(10, 10), 1000)
-        self.assertFalse(physics.calculate_moment_of_inertia(10, 10), 1001)
+        self.assertNotEqual(physics.calculate_moment_of_inertia(10, 10), 1001)
         self.assertRaises(ValueError, physics.calculate_moment_of_inertia, -10, -1000)
 
 
