@@ -8,6 +8,7 @@ made to test physics.py
 
 import unittest
 import physics
+import numpy as np
 
 
 class TestPhysics(unittest.TestCase):
@@ -47,6 +48,19 @@ class TestPhysics(unittest.TestCase):
         self.assertEqual(physics.calculate_moment_of_inertia(10, 10), 1000)
         self.assertNotEqual(physics.calculate_moment_of_inertia(10, 10), 1001)
         self.assertRaises(ValueError, physics.calculate_moment_of_inertia, -10, -1000)
+
+    def test_calculate_auv_acceleration(self):
+        self.assertRaises(
+            ValueError, physics.calculate_auv_acceleration, 101, np.pi, 100, 0.1, 0.5
+        )
+        self.assertEqual(
+            physics.calculate_auv_acceleration(np.array([1, 3, 1, 2]), 0.5, 1.5, 1.8),
+            np.array([0.00980067 - 0.00198669]),
+        )
+        self.assertNotEqual(
+            physics.calculate_auv_acceleration(np.array([1, 3, 1, 2]), 0.5, 1.5, 1.8),
+            np.array([0.00980067 - 9]),
+        )
 
 
 if __name__ == "__main__":
