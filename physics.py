@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 """
 
@@ -255,3 +256,84 @@ def calculate_auv2_angular_acceleration(T, alpha, L, l, inertia=100):
     return (l * np.sin(alpha) + L * np.cos(alpha)) * (
         (-1) * T[0] + (-1) * T[2] + T[1] + T[3]
     )
+
+# problem 10, part 1
+
+def simulate_auv2_motion(T, alpha, L, l, mass=100, inertia=100, dt=0.1, t_final=10, x0=0, y0=0, theta0=0):
+    '''
+    The AUV should start at the origin with an initial velocity of 0m/s
+    The AUV should be able to move in any direction.
+    The AUV should be able to rotate in either direction.
+    The AUV should be able to move and rotate simultaneously.
+
+    simulates the motion of the AUV in the 2D plane.
+
+    The function should take the following arguments:
+    T: an np.ndarray of the magnitudes of the forces applied by the thrusters in Newtons.
+    alpha: the angle of the thrusters in radians.
+    L: the distance from the center of mass of the AUV to the thrusters in meters.
+    l: the distance from the center of mass of the AUV to the thrusters in meters.
+    inertia (optional): the moment of inertia of the AUV in kg*m^2
+    The default value is 100.
+    dt (optional): the time step of the simulation in seconds. The default value is 0.1s
+    t_final (optional): the final time of the simulation in seconds. The default value is 10s
+    x0 (optional): the initial x-position of the AUV in meters. The default value is 0m
+    y0 (optional): the initial y-position of the AUV in meters. The default value is 0m
+    theta0 (optional): the initial angle of the AUV in radians. The default value is 0rad
+
+    The function should return the following:
+    t: an np.ndarray of the time steps of the simulation in seconds.
+    x: an np.ndarray of the x-positions of the AUV in meters.
+    y: an np.ndarray of the y-positions of the AUV in meters.
+    theta: an np.ndarray of the angles of the AUV in radians.
+    v: an np.ndarray of the velocities of the AUV in meters per second.
+    omega: an np.ndarray of the angular velocities of the AUV in radians per second.
+    a: an np.ndarray of the accelerations of the AUV in meters per second squared.
+    '''
+
+    for i in range(4):
+        if T[i] < 0:
+            raise ValueError
+
+    if L<0 or l<0 or inertia<0 or dt<0 or t_final<0:
+        raise ValueError
+    
+    t = np.arange(0, t_final, dt)
+    x = np.zeros_like(t)
+    y= np.zeros_like(t)
+    theta = np.zeros_like(t)
+    v = np.zeros_like(t)
+    omega = np.zeros_like(t)
+    a = np.zeros_like(t)
+
+    x[0] = x0
+    y[0] = y0
+    theta[0] = theta0
+
+    angular_acceleration = calculate_auv2_angular_acceleration(T, alpha, L, l)
+
+    for i in range(1, len(t)):
+        x[i] = x[i-1]+v[i-1]*dt*np.cos(theta[i-1]) 
+        y[i] = y[i-1]+v[i-1]*dt*np.sin(theta[i-1])
+        theta[i] = theta[i-1]+dt*omega[i-1]
+        omega[i] = omega[i-1] + angular_acceleration * dt
+        current_a = calculate_auv2_acceleration(T, alpha, theta[i-1])
+        ax = current_a[0]
+        ay = current_a[1]
+        a[i] = np.sqrt(np.power(ax,2) + np.power(ay, 2))
+        v[i] = v[i-1] + a[i-1] * dt
+
+    return t,x,y,theta,v,omega,a 
+
+
+def plot_auv2_motion(t,x,y,theta,v,omega,a):
+    plt.plot(t, x, label="X Position")
+    plt.plot(t, y, label="Y Position")
+    plt.plot(t, theta, label="Angle")
+    plt.plot(t, omega, label="Angular velocity")
+    plt.plot(t, v, label="Velocity")
+    plt.plot(t, a, label="Acceleration")
+    plt.xlabel("Time (s)")
+    plt.ylabel("X Position (m), Y Position (m), Angle (radians), Angular Velocity (radians/s^2), Velocity (m/s), Acceleration (m/s^2)")
+    plt.legend()
+    plt.show()
