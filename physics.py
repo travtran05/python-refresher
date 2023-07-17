@@ -253,9 +253,7 @@ def calculate_auv2_angular_acceleration(T, alpha, L, l, inertia=100):
     if L <= 0 or l <= 0 or inertia <= 0:
         raise ValueError
 
-    return (l * np.sin(alpha) + L * np.cos(alpha)) * (
-        (-1) * T[0] + (-1) * T[2] + T[1] + T[3]
-    )
+    return (L * np.sin(alpha) + l * np.cos(alpha)) * ((-1) * T[0] + (-1) * T[2] + T[1] + T[3])
 
 # problem 10, part 1
 

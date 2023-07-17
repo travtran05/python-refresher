@@ -115,10 +115,7 @@ class TestPhysics(unittest.TestCase):
     def test_calculate_auv2_angular_acceleration(self):
         test = np.array([1,3,1,2])
         wrongTest = np.array([-10,1,1,1])
-        self.assertEqual(
-            physics.calculate_auv2_angular_acceleration(test, 0.5, 1.5, 1.8),
-            6.538019436969373
-        )
+        self.assertEqual(physics.calculate_auv2_angular_acceleration(np.array([1,3,1,2]), 0.5, 1.5, 1.8), -0.06896360757926927)
         self.assertNotEqual(
             physics.calculate_auv2_angular_acceleration(test, 0.5, 1.5, 1.8), 19
         )
