@@ -151,10 +151,13 @@ def calculate_auv_acceleration(
 
     """
     if thruster_distance < 0 or volume <= 0 or mass <= 0 or f_magnitude < 0:
+        print("1")
         raise ValueError
     if f_magnitude > 100:
+        print("2")
         raise ValueError
     if f_angle > 30 / 180 * np.pi or f_angle < -30 * np.pi / 180:
+        print("4")
         raise ValueError
 
     force = f_magnitude / np.cos(f_angle)
@@ -215,7 +218,7 @@ def calculate_auv2_acceleration(T, alpha, theta, mass=100):
     if mass <= 0:
         raise ValueError
 
-    rotation_matrix = [[np.cos(theta), np.sin(theta)], [-np.sin(theta), np.cos[theta]]]
+    rotation_matrix = [[np.cos(theta), np.sin(theta)], [-np.sin(theta), np.cos(theta)]]
 
     xycomponents = [
         [np.cos(theta), np.cos(theta), -np.cos(theta), -np.cos(theta)],
