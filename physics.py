@@ -302,8 +302,10 @@ def simulate_auv2_motion(T, alpha, L, l, mass=100, inertia=100, dt=0.1, t_final=
     if L<0 or l<0 or inertia<0 or dt<0 or t_final<0:
         raise ValueError
 
-    #if T.shape != (1,4):
-    #    raise ValueError    
+    desired_shape = (4,)
+
+    if T.shape != desired_shape:
+        raise ValueError    
 
 
     t = np.arange(0, t_final, dt)

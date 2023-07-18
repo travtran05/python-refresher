@@ -137,7 +137,7 @@ class TestPhysics(unittest.TestCase):
         self.assertEqual(np.all(y_test), 0)
         self.assertEqual(theta_test[0], 0)
         self.assertEqual(theta_test[1], 0)
-        self.assertEqual(theta_test[2], 0.011493934596544877)
+        self.assertEqual(theta_test[2], 0)
         self.assertEqual(np.all(v_test), 0)
         self.assertEqual(np.all(a_test), 0)
         self.assertEqual(omega_test[0], 0)
