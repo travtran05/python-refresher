@@ -301,7 +301,11 @@ def simulate_auv2_motion(T, alpha, L, l, mass=100, inertia=100, dt=0.1, t_final=
 
     if L<0 or l<0 or inertia<0 or dt<0 or t_final<0:
         raise ValueError
-    
+
+    #if T.shape != (1,4):
+    #    raise ValueError    
+
+
     t = np.arange(0, t_final, dt)
     x = np.zeros_like(t)
     y= np.zeros_like(t)
@@ -317,15 +321,15 @@ def simulate_auv2_motion(T, alpha, L, l, mass=100, inertia=100, dt=0.1, t_final=
     angular_acceleration = calculate_auv2_angular_acceleration(T, alpha, L, l)
 
     for i in range(1, len(t)):
-        x[i] = x[i-1]+v[i-1]*dt*np.cos(theta[i-1]) 
-        y[i] = y[i-1]+v[i-1]*dt*np.sin(theta[i-1])
-        theta[i] = theta[i-1]+dt*omega[i-1]
+        x[i] = x[i-1]+v[i]*dt*np.cos(theta[i]) 
+        y[i] = y[i-1]+v[i]*dt*np.sin(theta[i])
+        theta[i] = theta[i-1]+dt*omega[i]
         omega[i] = omega[i-1] + angular_acceleration * dt
-        current_a = calculate_auv2_acceleration(T, alpha, theta[i-1])
+        current_a = calculate_auv2_acceleration(T, alpha, theta[i])
         ax = current_a[0]
         ay = current_a[1]
         a[i] = np.sqrt(np.power(ax,2) + np.power(ay, 2))
-        v[i] = v[i-1] + a[i-1] * dt
+        v[i] = v[i-1] + a[i] * dt
 
     return t,x,y,theta,v,omega,a 
 
