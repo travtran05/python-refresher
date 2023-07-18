@@ -129,7 +129,47 @@ class TestPhysics(unittest.TestCase):
         )
 
     def test_simulate_auv2_motion(self):
-        pass
+        t_test, x_test, y_test, theta_test, v_test, omega_test, a_test = physics.simulate_auv2_motion(np.array([1, 0, 1, 0]), 0.5, 1.5, 1.8, dt=0.5, t_final=1.5)
+        self.assertEqual(t_test[0], 0)
+        self.assertEqual(t_test[1], 0.5)
+        self.assertEqual(t_test[2], 1.0)
+        self.assertEqual(np.all(x_test), 0)
+        self.assertEqual(np.all(y_test), 0)
+        self.assertEqual(theta_test[0], 0)
+        self.assertEqual(theta_test[1], 0)
+        self.assertEqual(theta_test[2], 0.011493934596544877)
+        self.assertEqual(np.all(v_test), 0)
+        self.assertEqual(np.all(a_test), 0)
+        self.assertEqual(omega_test[0], 0)
+        self.assertEqual(omega_test[1], 0.022987869193089754)
+        self.assertEqual(omega_test[2], 0.04597573838617951)
+
+        self.assertNotEqual(t_test[0], 1)
+        self.assertNotEqual(t_test[1], 5)
+        self.assertNotEqual(t_test[2], 10)
+        self.assertNotEqual(np.all(x_test), 10)
+        self.assertNotEqual(np.all(y_test), 10)
+        self.assertNotEqual(theta_test[0], 10)
+        self.assertNotEqual(theta_test[1], 10)
+        self.assertNotEqual(theta_test[2], 44877)
+        self.assertNotEqual(np.all(v_test), 3)
+        self.assertNotEqual(np.all(a_test), 2)
+        self.assertNotEqual(omega_test[0], 1)
+        self.assertNotEqual(omega_test[1], 308975)
+        self.assertNotEqual(omega_test[2], 59)
+
+        wrongTest = np.array([-1,-1,-1,-1])
+
+        self.assertRaises(
+            ValueError,
+            physics.simulate_auv2_motion,
+            wrongTest,
+            np.pi,
+            -1,
+            -0.5
+        )
+
+
 
 
 
