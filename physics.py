@@ -325,7 +325,7 @@ def simulate_auv2_motion(T, alpha, L, l, mass=100, inertia=100, dt=0.1, t_final=
         y[i] = y[i-1]+v[i]*dt*np.sin(theta[i])
         theta[i] = theta[i-1]+dt*omega[i]
         omega[i] = omega[i-1] + angular_acceleration * dt
-        current_a = calculate_auv2_acceleration(T, alpha, theta[i])
+        current_a = calculate_auv2_acceleration(T, alpha, theta[i], mass)
         ax = current_a[0]
         ay = current_a[1]
         a[i] = np.sqrt(np.power(ax,2) + np.power(ay, 2))
