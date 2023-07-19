@@ -347,3 +347,20 @@ def plot_auv2_motion(t,x,y,theta,v,omega,a):
     plt.ylabel("X Position (m), Y Position (m), Angle (radians), Angular Velocity (radians/s^2), Velocity (m/s), Acceleration (m/s^2)")
     plt.legend()
     plt.show()
+
+def plot_auv2_motion_xy(t,x,y,theta,v,omega,a):
+    #plt.plot(t, x, label="X Position")
+    #plt.plot(t, y, label="Y Position")
+    #plt.plot(t, theta, label="Angle")
+    #plt.plot(t, omega, label="Angular velocity")
+    #plt.plot(t, v, label="Velocity")
+    #plt.plot(t, a, label="Acceleration")
+    plt.plot(x, y, label="xy graph")
+    plt.xlabel("Time (s)")
+    plt.ylabel("X Position (m), Y Position (m), Angle (radians), Angular Velocity (radians/s^2), Velocity (m/s), Acceleration (m/s^2)")
+    plt.legend()
+    plt.show()
+
+
+
+                        
